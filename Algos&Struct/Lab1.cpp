@@ -14,12 +14,11 @@ public:
         while (k <= m)
         {
             if (k < m && A[Ind[k]] < A[Ind[k + 1]]) { k++; }
-            if (A[Ind[j]] < A[Ind[k]])
-            {
+            change++;
+            if (A[Ind[j]] < A[Ind[k]]){
                 swap(Ind[j], Ind[k]);
                 j = k;
                 k = k * 2 + 1;
-                change++;
             }
             else break;
         }
