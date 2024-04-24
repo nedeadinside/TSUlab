@@ -10,7 +10,7 @@ double integrate(double a, double b, int n) {
     double h = (b - a) / (3 * n);
     double sum = 0.0;
     
-    for (int i = 1; i < ((3 * n) - 1); i++) {
+    for (int i = 1; i <= ((3 * n) - 1); i++) {
         double x = a + i * h;
         if (i % 3 == 0) {
             sum += 2 * f(x);
@@ -26,7 +26,8 @@ double integrate(double a, double b, int n) {
 int main(int argc, char** argv) {
     int rank, size;
     double a = 2.5, b = 5;
-    int n = 100000000;
+    int n = 1000;
+    
     double result, local_result;
     double start_time, end_time;
     
@@ -38,7 +39,7 @@ int main(int argc, char** argv) {
     
     MPI_Barrier(MPI_COMM_WORLD);
     start_time = MPI_Wtime();
-    
+        
     local_result = integrate(a + (rank * (b - a) / size), a + ((rank + 1) * (b - a) / size), local_n);
 
     end_time = MPI_Wtime();
@@ -47,7 +48,7 @@ int main(int argc, char** argv) {
     MPI_Reduce(&local_result, &result, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     
     if (rank == 0) {
-	printf("Size: %d \n", size);
+	    printf("Size: %d \n", size);
         printf("Result: %.10f \n", result);
         printf("Time: %f seconds\n", end_time - start_time);
     }
