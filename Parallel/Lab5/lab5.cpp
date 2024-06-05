@@ -56,18 +56,15 @@ int main(int argc, char** argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     
     int local_n = n / size;
-    
-    MPI_Barrier(MPI_COMM_WORLD);
+
     start_time = MPI_Wtime();
         
     local_result = doubleIntegrate(a + (rank * (b - a) / size), a + ((rank + 1) * (b - a) / size),
      c + (rank * (d - c) / size), c + ((rank + 1) * (d - c) / size), local_n);
 
-    end_time = MPI_Wtime();
-    MPI_Barrier(MPI_COMM_WORLD);
-
     MPI_Reduce(&local_result, &result, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     
+    end_time = MPI_Wtime();
     if (rank == 0) {
 	    printf("Size: %d \n", size);
         printf("Result: %.10f \n", result);
